@@ -10,8 +10,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +47,7 @@ public class FXMLDocumentController implements Initializable {
     private Button Ajouter;
    @FXML
 private TableView<publication> table;
-    @FXML
+@FXML
 private TableColumn<publication, String> titrecolumn;
 @FXML
 private TableColumn<publication, String> descriptioncolumn;
@@ -81,10 +79,10 @@ private Button delete;
 
    @FXML
 private void Ajouter(ActionEvent event) throws SQLException {
-    String titreValue = titre.getText();
-    String descriptionValue = description.getText();
-    String emailValue = email.getText();
-    String numdetelValue = numdetel.getText();
+    String titreValue = titre.getText().trim();
+    String descriptionValue = description.getText().trim();
+    String emailValue = email.getText().trim();
+    String numdetelValue = numdetel.getText().trim();
 
     // Validation checks - you can add your own rules
     if (titreValue.isEmpty() || descriptionValue.isEmpty() || emailValue.isEmpty() || numdetelValue.isEmpty()) {
@@ -92,6 +90,15 @@ private void Ajouter(ActionEvent event) throws SQLException {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setContentText("Veuillez remplir tous les champs");
+        alert.showAndWait();
+        return;
+    }
+    
+    // Check that the description and title do not contain numbers
+    if (titreValue.matches(".*\\d.*") || descriptionValue.matches(".*\\d.*")) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText("Le titre et la description ne doivent pas contenir de chiffres");
         alert.showAndWait();
         return;
     }
@@ -115,6 +122,15 @@ private void Ajouter(ActionEvent event) throws SQLException {
         alert.showAndWait();
         return;
     }
+    
+    // Check that the phone number does not start with 1
+    if (numdetelValue.charAt(0) == '1') {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText("Le numéro de téléphone ne doit pas commencer par 1");
+        alert.showAndWait();
+        return;
+    }
 
     // Create a new Publication object from the data entered in the text fields
     publication newPublication = new publication(titreValue, descriptionValue, emailValue, numdetelValue);
@@ -131,6 +147,10 @@ private void Ajouter(ActionEvent event) throws SQLException {
     // Ajouter la publication à la base de données en utilisant la classe publicationCrud
     publicationCrud pc = new publicationCrud();
     pc.ajouterpublication(newPublication);
+    Alert all = new Alert(Alert.AlertType.CONFIRMATION);
+    all.setTitle("publication");
+    all.setContentText("Publication ajoutée avec succès !");
+    all.showAndWait();
 }
 
 private boolean isValidEmail(String email) {
@@ -167,11 +187,134 @@ private boolean isValidPhoneNumber(String phoneNumber) {
     // Delete the selected publication from the database
     publicationCrud pc = new publicationCrud();
     pc.supprimerpublication(selectedPublication.getId());
+     Alert all = new Alert(Alert.AlertType.CONFIRMATION);
+                    all.setTitle("publication");
+                    all.setContentText("publication supprimé avec succés!!");
+                    all.show();
         
     }
 
     @FXML
-    private void Update(ActionEvent event) {
+private void Update(ActionEvent event) {
+    // Get the selected publication from the table
+    publication selectedPublication = table.getSelectionModel().getSelectedItem();
+
+    if (selectedPublication == null) {
+        // Show error message if no publication is selected
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText("Veuillez sélectionner une publication à modifier");
+        alert.showAndWait();
+        return;
     }
 
+    String titreValue = titre.getText();
+    String descriptionValue = description.getText();
+    String emailValue = email.getText();
+    String numdetelValue = numdetel.getText();
+
+
+    // Validation checks - you can add your own rules
+    if (titreValue.isEmpty() || descriptionValue.isEmpty() || emailValue.isEmpty() || numdetelValue.isEmpty()) {
+        // Show error message
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText("Veuillez remplir tous les champs");
+        alert.showAndWait();
+        return;
+    }
+
+    // Check if the title contains numbers
+    if (titreValue.matches(".*\\d.*")) {
+        // Show error message
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText("Le titre ne doit pas contenir de chiffres");
+        alert.showAndWait();
+        return;
+    }
+
+    // Check if the description contains numbers
+    if (descriptionValue.matches(".*\\d.*")) {
+        // Show error message
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText("La description ne doit pas contenir de chiffres");
+        alert.showAndWait();
+        return;
+    }
+
+    // Phone number validation check
+    if (!isValidPhoneNumber(numdetelValue)) {
+        // Show error message
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText("Veuillez saisir un numéro de téléphone valide (8 chiffres)");
+        alert.showAndWait();
+        return;
+    }
+
+    // Check if the phone number starts with 1
+    if (numdetelValue.startsWith("1")) {
+        // Show error message
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText("Le numéro de téléphone ne doit pas commencer par 1");
+        alert.showAndWait();
+        return;
+    }
+
+    // Email validation check
+    if (!isValidEmail(emailValue)) {
+        // Show error message
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText("Veuillez saisir une adresse email valide");
+        alert.showAndWait();
+        return;
+    }
+
+    // Update the selected publication with the new data
+    selectedPublication.setTitre(titreValue);
+    selectedPublication.setDescription(descriptionValue);
+    selectedPublication.setEmail(emailValue);
+    selectedPublication.setNumerodetel(Integer.parseInt(numdetelValue));
+
+    // Refresh the table to show the updated publication
+    table.refresh();
+
+    // Update the selected publication in the database
+    publicationCrud pc = new publicationCrud();
+    pc.updatepublication(selectedPublication.getId(), selectedPublication);
+    Alert all = new Alert(Alert.AlertType.CONFIRMATION);
+    all.setTitle("publication");
+    all.setContentText("publication modifié !!");
+    all.show();
+}
+
+    @FXML
+    
+    public void publicationSelect() {
+        publication m = table.getSelectionModel().getSelectedItem();
+        int num = table.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < -1) {
+            return;
+        }
+
+       // idt.setText(String.valueOf(m.getId()));
+
+        titre.setText(m.getTitre());
+       // glucidest.setText(String.valueOf(m.getGlucides()));
+        description.setText(m.getDescription());
+        //caloriest.setText(String.valueOf(m.getCalories()));
+        //proteinst.setText(String.valueOf(m.getProteins()));
+        email.setText(m.getEmail());
+        numdetel.setText(String.valueOf(m.getNumerodetel()));
+
+        
+    
+        
+
+}
 }

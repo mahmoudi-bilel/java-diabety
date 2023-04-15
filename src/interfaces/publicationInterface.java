@@ -17,6 +17,6 @@ import java.util.List;
 public interface publicationInterface<T> {
     public void ajouterpublication(T t)throws SQLException;
     public void supprimerpublication(int id);
-    public void updatepublication(int id,T t);
+    public void updatepublication(int id,publication t);
     public List<T> listedespublications();
 }
