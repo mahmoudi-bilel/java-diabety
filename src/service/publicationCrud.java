@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javax.activation.DataSource;
 
 /**
  *
@@ -60,7 +63,31 @@ public void ajouterpublication(publication t) throws SQLException{
 }
     
 
-     @Override
+     public List<publication> rechercherParTitre(String titre) throws SQLException {
+    Connection cnx = MyConnection.getInstance().getConn();
+    List<publication> publicationList = new ArrayList<>();
+    String req = "SELECT * FROM publication WHERE titre LIKE ?";
+    PreparedStatement pst = cnx.prepareStatement(req);
+    pst.setString(1, "%" + titre + "%");
+    ResultSet rs = pst.executeQuery();
+    while (rs.next()) {
+        publication publication = new publication();
+        publication.setId(rs.getInt("id"));
+        publication.setTitre(rs.getString("titre"));
+        publication.setDescription(rs.getString("description"));
+        publication.setEmail(rs.getString("email"));
+        publication.setNumerodetel(rs.getInt("numerodetel"));
+        publicationList.add(publication);
+    }
+    if (publicationList.size() == 0) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText("Il n'y a aucun publication correspondant à ce titre.");
+        alert.showAndWait();
+    }
+    return publicationList;
+}
+      @Override
     public List<publication> listedespublications() {
 
          List<publication> myList = new ArrayList<>();
@@ -72,10 +99,9 @@ public void ajouterpublication(publication t) throws SQLException{
             
             while(rs.next()){
                   publication p = new publication();
-                p.setId(rs.getInt("id"));
                 p.setTitre(rs.getString("titre"));
                 p.setDescription(rs.getString("description"));
-                p.setEmail(rs.getString("email"));
+                 p.setEmail(rs.getString("email"));
                 p.setNumerodetel(rs.getInt("numerodetel"));
 
                 myList.add(p);
@@ -87,8 +113,17 @@ public void ajouterpublication(publication t) throws SQLException{
         }
         return myList;
     }
+
     
+
+    
+
+   
 }
+
+
+    
+
 
    
     

@@ -15,7 +15,7 @@
 <AnchorPane id="AnchorPane" prefHeight="438.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="desktop.diabety.FXMLDocumentController">
     <children>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-      <ImageView cache="true" fitHeight="150.0" fitWidth="438.0" layoutX="154.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView cache="true" fitHeight="150.0" fitWidth="438.0" layoutX="375.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/diabety.png" />
          </image>
@@ -26,7 +26,7 @@
             <Cursor fx:constant="DISAPPEAR" />
          </cursor>
       </ImageView>
-      <VBox layoutX="14.0" layoutY="129.0" prefHeight="199.0" prefWidth="241.0">
+      <VBox layoutX="25.0" layoutY="27.0" prefHeight="173.0" prefWidth="202.0">
          <children>
             <Label prefHeight="18.0" prefWidth="253.0" text="Titre:" textFill="#6a147b" />
             <TextField fx:id="titre" />
@@ -38,7 +38,7 @@
             <TextField fx:id="numdetel" layoutX="10.0" layoutY="114.0" />
          </children>
       </VBox>
-      <Button fx:id="Ajouter" layoutX="31.0" layoutY="352.0" mnemonicParsing="false" onAction="#Ajouter" prefHeight="26.0" prefWidth="94.0" text="Ajouter" />
+      <Button fx:id="Ajouter" layoutX="14.0" layoutY="219.0" mnemonicParsing="false" onAction="#Ajouter" prefHeight="26.0" prefWidth="94.0" text="Ajouter" />
       <TableView fx:id="table" layoutX="281.0" layoutY="114.0" prefHeight="274.0" prefWidth="531.0">
         <columns>
           <TableColumn fx:id="titrecolumn" prefWidth="92.79998779296875" text="Titre" />
@@ -47,7 +47,7 @@
             <TableColumn fx:id="numcolumn" prefWidth="210.39990234375" text="numéro de téléphone" />
         </columns>
       </TableView>
-      <Button fx:id="delete" layoutX="148.0" layoutY="352.0" mnemonicParsing="false" onAction="#delete" prefHeight="26.0" prefWidth="94.0" text="Supprimer" />
-      <Button fx:id="Update" layoutX="75.0" layoutY="399.0" mnemonicParsing="false" onAction="#Update" prefHeight="26.0" prefWidth="128.0" text="Modifier " />
+      <Button fx:id="delete" layoutX="14.0" layoutY="288.0" mnemonicParsing="false" onAction="#delete" prefHeight="26.0" prefWidth="94.0" text="Supprimer" />
+      <Button fx:id="Update" layoutX="14.0" layoutY="251.0" mnemonicParsing="false" onAction="#Update" prefHeight="26.0" prefWidth="94.0" text="Modifier " />
     </children>
 </AnchorPane>

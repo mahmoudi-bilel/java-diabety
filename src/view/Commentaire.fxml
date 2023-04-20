@@ -8,15 +8,15 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CommentaireController">
    <children>
-      <Text fill="#b10000" layoutX="14.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="commentaires" textAlignment="CENTER" wrappingWidth="187.43789672851562">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
       <ImageView fitHeight="407.0" fitWidth="600.0" opacity="0.7" pickOnBounds="true">
          <image>
             <Image url="@../image/background.jpg" />
          </image>
       </ImageView>
+      <Text fill="#b10000" layoutX="20.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="commentaires" textAlignment="CENTER" wrappingWidth="187.43789672851562">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

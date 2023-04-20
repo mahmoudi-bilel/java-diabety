@@ -19,4 +19,5 @@ public interface publicationInterface<T> {
     public void supprimerpublication(int id);
     public void updatepublication(int id,publication t);
     public List<T> listedespublications();
+ public List<publication> rechercherParTitre(String titre) throws SQLException;
 }
