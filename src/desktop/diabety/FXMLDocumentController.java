@@ -71,6 +71,8 @@ private Button delete;
     private Button Update;
     @FXML
     private Button read;
+    @FXML
+    private Button button;
     /**
      * Initializes the controller class.
      */
@@ -339,10 +341,20 @@ private void Update(ActionEvent event) {
 
    @FXML
 private void read(ActionEvent event) throws IOException {
-Stage nouveauStage;
+        Stage nouveauStage;
         Parent root = FXMLLoader.load(getClass().getResource("/view/AffichageDesPublications.fxml"));
         nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root,825,567);
         nouveauStage.setScene(scene);
 }
+
+    @FXML
+    private void surffing(ActionEvent event) throws IOException {
+        Stage nouveauStage;
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Email.fxml"));
+        nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root,635,429);
+        nouveauStage.setScene(scene);
+        
+    }
 }

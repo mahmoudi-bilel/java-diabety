@@ -20,4 +20,6 @@ public interface publicationInterface<T> {
     public void updatepublication(int id,publication t);
     public List<T> listedespublications();
  public List<publication> rechercherParTitre(String titre) throws SQLException;
+ public String filterInappropriateWords(String title, String content) ;
+
 }

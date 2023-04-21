@@ -77,5 +77,6 @@
          </cursor>
       </Text>
       <Button fx:id="read" layoutX="135.0" layoutY="379.0" mnemonicParsing="false" onAction="#read" prefHeight="26.0" prefWidth="94.0" text="Afficher" textFill="#890606" />
+      <Button fx:id="button" layoutX="54.0" layoutY="425.0" mnemonicParsing="false" onAction="#surffing" prefHeight="26.0" prefWidth="144.0" text="Envoyer un Email " textFill="#840000" />
     </children>
 </AnchorPane>
