@@ -9,7 +9,36 @@ package entites;
 public class Commentaire {
     private int id_com;
    private String contenu;
+   private publication id_publication;
 
+    public Commentaire(String contenu, publication id_publication) {
+        this.contenu = contenu;
+        this.id_publication = id_publication;
+    }
+   
+
+    public Commentaire(int id_com, String contenu, publication id_publication) {
+        this.id_com = id_com;
+        this.contenu = contenu;
+        this.id_publication = id_publication;
+    }
+
+    public publication getId_publication() {
+        return id_publication;
+    }
+
+    public void setId_publication(publication id_publication) {
+        this.id_publication = id_publication;
+    }
+    
+    
+
+    
+
+    
+public int getId_com() {
+    return this.id_com;
+}
     public Commentaire(int id_com, String contenu) {
         this.id_com = id_com;
         this.contenu = contenu;
@@ -20,9 +49,7 @@ public class Commentaire {
         this.contenu = "";
     }
 
-    public int getId_com() {
-        return id_com;
-    }
+    
 
     public String getContenu() {
         return contenu;

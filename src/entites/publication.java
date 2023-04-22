@@ -16,6 +16,10 @@ public class publication {
     private String email;
     private int numerodetel;
 
+    public publication(String description) {
+        this.description = description;
+    }
+
     
     public publication(String titre, String description, String email, int numerodetel) {
         this.titre = titre;

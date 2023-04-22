@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import entites.Commentaire;
+import entites.publication;
 import java.util.List;
 
 /**
@@ -13,8 +15,11 @@ import java.util.List;
  * @param <T>
  */
 public interface CommentaireInterface<T> {
-    public void ajouterCommentaire(T t) ; 
+    public void ajouterCommentaire(T t,publication p) ; 
     public void supprimerCommentaire(int id);
-    public void updateCommentaire(int id,T t);
+    public void updateCommentaire(int id,Commentaire t);
+       // public void updatepublication(int id,publication t);
+
+
     public List<T> listeDesCommentaires();
 }

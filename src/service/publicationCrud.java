@@ -159,8 +159,25 @@ public String filterInappropriateWords(String title, String content) {
     return filteredTitle + " " + filteredContent;
 }
 
+@Override
+public List<String> getalldescription(){
+    List<String> description = new ArrayList<>();
+            try {
+                String sql = "select description from publication";
+                Statement ste = cnx.createStatement();
+                ResultSet s = ste.executeQuery(sql);
+                while (s.next()) {
 
+                
+                    description.add(s.getString(1));
 
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            return description;
+    
+}
    
 }
 

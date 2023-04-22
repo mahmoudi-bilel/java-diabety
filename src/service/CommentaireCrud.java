@@ -7,6 +7,7 @@ package service;
 
 import interfaces.CommentaireInterface;
 import entites.Commentaire;
+import entites.publication;
 
 import utils.MyConnection;
 import java.sql.Connection;
@@ -29,14 +30,15 @@ public class CommentaireCrud implements CommentaireInterface<Commentaire> {
         cnx =MyConnection.getInstance().getConn();
     }
      @Override
-     public void ajouterCommentaire(Commentaire t) {
+     public void ajouterCommentaire(Commentaire t,publication p) {
         try {
-            String requete = "INSERT INTO `commentaire`(`id_com`, `contenu`)"
-                    + "VALUES (?,?)";
+            String requete = "INSERT INTO `commentaire`(`id_com`, `contenu`,`id_publication`)"
+                    + "VALUES (?,?,?)";
             PreparedStatement pst = cnx
                                     .prepareStatement(requete);
             pst.setInt(1, t.getId_com());
             pst.setString(2, t.getContenu());
+             pst.setInt(3, p.getId());
         
             pst.executeUpdate();
             System.out.println("Done!");
@@ -44,6 +46,8 @@ public class CommentaireCrud implements CommentaireInterface<Commentaire> {
             System.out.println(ex.getMessage());
         }
     }
+     
+     
      @Override
      public void supprimerCommentaire(int id){
         try {
@@ -56,6 +60,7 @@ public class CommentaireCrud implements CommentaireInterface<Commentaire> {
 }
      @Override
      public void updateCommentaire(int id,Commentaire C){
+         
     try {
             String query ="UPDATE `commentaire` SET `contenu`='"+C.getContenu()+"' WHERE id_com="+id;
             Statement st=cnx.createStatement();
@@ -69,26 +74,25 @@ public class CommentaireCrud implements CommentaireInterface<Commentaire> {
      @Override
     public List<Commentaire> listeDesCommentaires() {
 
-         List<Commentaire> myList = new ArrayList<>();
-        try {
-
-            String requete = "SELECT * FROM commentaire";
-            Statement st = cnx.createStatement();
-            ResultSet rs = st.executeQuery(requete);
-            
-            while(rs.next()){
-                  Commentaire p = new Commentaire();
-                p.setId_com(rs.getInt("id_com"));
-                p.setContenu(rs.getString("contenu"));
-                myList.add(p);
-                
-               
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+         List<Commentaire> commentaires= new ArrayList<>();
+    try {
+        String sql = "SELECT commentaire.id_com,commentaire.contenu, publication.description AS description " +
+                     "FROM commentaire " +
+                     "JOIN publication ON commentaire.id_publication = publication.id";
+        Statement ste = cnx.createStatement();
+        ResultSet s = ste.executeQuery(sql);
+        
+        while (s.next()) {
+            Commentaire m = new Commentaire(s.getString("contenu"),new publication(s.getString("description")));
+            commentaires.add(m);
         }
-        return myList;
+    } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
     }
+    return commentaires;
+    }
+    
+    
  
     
 }

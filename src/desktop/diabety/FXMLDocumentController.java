@@ -73,6 +73,8 @@ private Button delete;
     private Button read;
     @FXML
     private Button button;
+    @FXML
+    private Button commenter;
     /**
      * Initializes the controller class.
      */
@@ -217,7 +219,7 @@ private boolean isValidPhoneNumber(String phoneNumber) {
 private void Update(ActionEvent event) {
     // Get the selected publication from the table
     publication selectedPublication = table.getSelectionModel().getSelectedItem();
-
+        System.out.println(table.getSelectionModel().getSelectedItem().getId());
     if (selectedPublication == null) {
         // Show error message if no publication is selected
         Alert alert = new Alert(AlertType.ERROR);
@@ -304,6 +306,7 @@ private void Update(ActionEvent event) {
 
     // Update the selected publication in the database
     publicationCrud pc = new publicationCrud();
+    
     pc.updatepublication(selectedPublication.getId(), selectedPublication);
     Alert all = new Alert(Alert.AlertType.CONFIRMATION);
     all.setTitle("publication");
@@ -356,5 +359,14 @@ private void read(ActionEvent event) throws IOException {
         Scene scene = new Scene(root,635,429);
         nouveauStage.setScene(scene);
         
+    }
+
+    @FXML
+    private void commenter(ActionEvent event) throws IOException {
+         Stage nouveauStage;
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Commentaire.fxml"));
+        nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root,600,400);
+        nouveauStage.setScene(scene);
     }
 }

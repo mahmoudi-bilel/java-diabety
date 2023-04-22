@@ -21,5 +21,7 @@ public interface publicationInterface<T> {
     public List<T> listedespublications();
  public List<publication> rechercherParTitre(String titre) throws SQLException;
  public String filterInappropriateWords(String title, String content) ;
+     public List<String> getalldescription();
+
 
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AffichercommentaireController">
+   <children>
+      <ImageView fitHeight="495.0" fitWidth="740.0" layoutX="-31.0" layoutY="-21.0" pickOnBounds="true">
+         <image>
+            <Image url="@../image/background.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="80.0" fitWidth="323.0" layoutX="282.0" layoutY="14.0" pickOnBounds="true">
+         <image>
+            <Image url="@../image/diabety.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tableview" layoutX="282.0" layoutY="87.0" onMouseClicked="#select" prefHeight="332.0" prefWidth="417.0">
+        <columns>
+          <TableColumn fx:id="publicationcol" prefWidth="100.79998779296875" text="Publication" />
+          <TableColumn fx:id="commentairecol" prefWidth="127.20001220703125" text="commentaire" />
+            <TableColumn fx:id="identifiant" prefWidth="187.9999938964844" text="Identifiant" />
+        </columns>
+      </TableView>
+      <Button layoutX="37.0" layoutY="224.0" mnemonicParsing="false" text="supprimer" />
+      <Button fx:id="modifier" layoutX="141.0" layoutY="223.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="70.0" text="modifier" />
+      <TextField fx:id="contenuselected" layoutX="37.0" layoutY="168.0" prefHeight="26.0" prefWidth="222.0" />
+      <Label layoutX="48.0" layoutY="127.0" prefHeight="18.0" prefWidth="186.0" text="contenu d'un commentaire" />
+   </children>
+</AnchorPane>
