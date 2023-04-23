@@ -121,7 +121,7 @@ System.out.println("ID utilisateur: " + idUser);
          Stage nouveauStage;
         Parent root = FXMLLoader.load(getClass().getResource("/view/affichercommentaire.fxml"));
         nouveauStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root,600,400);
+        Scene scene = new Scene(root,900,700);
         nouveauStage.setScene(scene);
     }
     

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import entites.Commentaire;
@@ -10,6 +5,7 @@ import entites.publication;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,11 +21,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import service.CommentaireCrud;
 
-/**
- * FXML Controller class
- *
- * @author Bilel Mahmoudi
- */
 public class AffichercommentaireController implements Initializable {
 
     @FXML
@@ -37,92 +28,112 @@ public class AffichercommentaireController implements Initializable {
     @FXML
     private TableColumn<Commentaire, String> commentairecol;
     @FXML
-    private TableView<Commentaire>tableview;
+    private TableView<Commentaire> tableview;
     @FXML
     private TextField contenuselected;
     @FXML
     private Button modifier;
     @FXML
-    private TableColumn<?, ?> identifiant;
+    private TableColumn<Commentaire, Integer> identifiant;
+    @FXML
+    private Button supprimer;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         publicationcol.setCellValueFactory(cellData -> {
-    return new SimpleStringProperty(cellData.getValue().getId_publication().getDescription());
-});
+            return new SimpleStringProperty(cellData.getValue().getId_publication().getDescription());
+        });
 
-commentairecol.setCellValueFactory(cellData -> {
-    return new SimpleStringProperty(cellData.getValue().getContenu());
-});
+        commentairecol.setCellValueFactory(cellData -> {
+            return new SimpleStringProperty(cellData.getValue().getContenu());
+        });
 
-// Récupérer les données de la base de données
-CommentaireCrud ps= new CommentaireCrud();
-List<Commentaire> playlists = ps.listeDesCommentaires();
+        identifiant.setCellValueFactory(cellData -> {
+            return new SimpleObjectProperty<>(cellData.getValue().getId_com());
+        });
 
-// Ajouter les données à la TableView
-ObservableList<Commentaire> observablePlaylists = FXCollections.observableArrayList(playlists);
-tableview.setItems(observablePlaylists);
+        CommentaireCrud ps = new CommentaireCrud();
+        List<Commentaire> commentaires = ps.listeDesCommentaires();
 
-
-    }    
-    
-   
-    
-
-   @FXML
-private void select() {
-    Commentaire m = tableview.getSelectionModel().getSelectedItem();
-    if (m == null) {
-        return;
+        ObservableList<Commentaire> observableCommentaires = FXCollections.observableArrayList(commentaires);
+        tableview.setItems(observableCommentaires);
     }
-    m.setId_com(m.getId_com()); // Ajoutez cette ligne pour inclure l'ID du commentaire sélectionné
-    contenuselected.setText(m.getContenu());
-}
 
-@FXML
-private void modifier(ActionEvent event) {
-    Commentaire selectedcommentaire = tableview.getSelectionModel().getSelectedItem();
-    if (selectedcommentaire == null) {
-        // Show error message if no publication is selected
+    @FXML
+    private void select() {
+        Commentaire m = tableview.getSelectionModel().getSelectedItem();
+        int num = tableview.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < -1) {
+            return;
+        }
+        if (m == null) {
+            return;
+        }
+        m.setId_com(m.getId_com()); // Ajoutez cette ligne pour inclure l'ID du commentaire sélectionné
+        contenuselected.setText(m.getContenu());
+    }
+
+    @FXML
+    private void modifier(ActionEvent event) {
+        Commentaire selectedCommentaire = tableview.getSelectionModel().getSelectedItem();
+        if (selectedCommentaire == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText("Veuillez sélectionner le commentaire à modifier");
+            alert.showAndWait();
+            return;
+        }
+
+        String contenuValue = contenuselected.getText();
+        if (contenuValue.isEmpty()) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText("Veuillez remplir le champ");
+            alert.showAndWait();
+            return;
+        }
+
+        selectedCommentaire.setContenu(contenuValue);
+
+        tableview.refresh();
+
+        CommentaireCrud pc = new CommentaireCrud();
+        pc.updateCommentaire(selectedCommentaire.getId_com(), selectedCommentaire);
+
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("commentaire");
+        alert.setContentText("commentaire modifié !!");
+        alert.show();
+    }
+
+    @FXML
+private void supprimer(ActionEvent event) {
+    Commentaire selectedCommentaire = tableview.getSelectionModel().getSelectedItem();
+    if (selectedCommentaire == null) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Erreur");
-        alert.setContentText("Veuillez sélectionner le commentaire à modifier");
+        alert.setContentText("Veuillez sélectionner le commentaire à supprimer");
         alert.showAndWait();
         return;
     }
 
-    String contenuValue = contenuselected.getText();
-    // Validation checks - you can add your own rules
-    if (contenuValue.isEmpty()) {
-        // Show error message
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setContentText("Veuillez remplir le champ");
-        alert.showAndWait();
-        return;
-    }
-    // Update the selected publication with the new data
-    selectedcommentaire.setContenu(contenuValue);
+    int idPublication = selectedCommentaire.getId_publication().getId();
+    int idCommentaire = selectedCommentaire.getId_com();
 
-    // Refresh the table to show the updated publication
-    tableview.refresh();
-
-    // Update the selected publication in the database
     CommentaireCrud pc = new CommentaireCrud();
-    pc.updateCommentaire(selectedcommentaire.getId_com(), selectedcommentaire);
-    System.out.println(selectedcommentaire.getId_com());
-        System.out.println(tableview.getSelectionModel().getSelectedItem().getId_com());
+    pc.supprimerCommentaire(idCommentaire);
 
-   
-        Alert all = new Alert(Alert.AlertType.CONFIRMATION);
-        all.setTitle("commentaire");
-        all.setContentText("commentaire modifié !!");
-        all.show();
-    
+    // Mettre à jour la liste des commentaires
+    List<Commentaire> commentaires = pc.listeDesCommentaires();
+    ObservableList<Commentaire> observableCommentaires = FXCollections.observableArrayList(commentaires);
+    tableview.setItems(observableCommentaires);
+
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("Commentaire");
+    alert.setContentText("Commentaire supprimé !!");
+    alert.show();
 }
 
+    }
 
-}

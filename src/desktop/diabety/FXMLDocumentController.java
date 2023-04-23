@@ -167,7 +167,7 @@ private void Ajouter(ActionEvent event) throws SQLException {
     
     // Ajouter la publication à la base de données en utilisant la classe publicationCrud
     publicationCrud pc = new publicationCrud();
-    pc.ajouterpublication(newPublication);
+    pc.ajouterPublication(newPublication);
     Alert all = new Alert(Alert.AlertType.CONFIRMATION);
     all.setTitle("publication");
     all.setContentText("Publication ajoutée avec succès !");
@@ -219,7 +219,7 @@ private boolean isValidPhoneNumber(String phoneNumber) {
 private void Update(ActionEvent event) {
     // Get the selected publication from the table
     publication selectedPublication = table.getSelectionModel().getSelectedItem();
-        System.out.println(table.getSelectionModel().getSelectedItem().getId());
+    //System.out.println(table.getSelectionModel().getSelectedItem().getId());
     if (selectedPublication == null) {
         // Show error message if no publication is selected
         Alert alert = new Alert(AlertType.ERROR);

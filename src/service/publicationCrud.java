@@ -31,38 +31,7 @@ public class publicationCrud implements publicationInterface<publication> {
     public publicationCrud() {
         cnx =MyConnection.getInstance().getConn();
     }
-     /*@Override
-    
-public void ajouterpublication(publication t) throws SQLException{
-     String req = "INSERT INTO publication (id, titre, description,email,numerodetel) VALUES ('" + t.getId() + "', '" + t.getTitre() + "', '" + t.getDescription() + "', '" + t.getEmail() + "', '" + t.getNumerodetel() + "')";
-        
-     Statement st = cnx.createStatement();
-        st.executeUpdate(req);
-        System.out.println("publication ajouté avec succés");    }*/
-   @Override 
-public void ajouterpublication(publication t) throws SQLException{
-    String req = "INSERT INTO publication (id, titre, description,email,numerodetel) VALUES ('" + t.getId() + "', '" + t.getTitre() + "', '" + t.getDescription() + "', '" + t.getEmail() + "', '" + t.getNumerodetel() + "')";
-
-    // Filter inappropriate words
-    String filteredDescription = filterInappropriateWords(t.getTitre(),t.getDescription());
-
-    
-    // Check if filtered description is different from original description
-    if (!filteredDescription.equals(t.getDescription())) {
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle("Attention");
-        alert.setHeaderText(null);
-        alert.setContentText("Il y a des mots interdits dans la publication!");
-        alert.showAndWait();
-    }
-
-    // Use the filtered description for the query
-    Statement st = cnx.createStatement();
-    st.executeUpdate(req.replace(t.getDescription(), filteredDescription));
-    System.out.println("publication ajouté avec succés");
-}
-
-
+     
      @Override
      public void supprimerpublication(int id){
         try {
@@ -136,28 +105,7 @@ public void ajouterpublication(publication t) throws SQLException{
         return myList;
     }
 
-    
-
    
-@Override
-public String filterInappropriateWords(String title, String content) {
-    String[] inappropriateWords = {"bad", "ugly", "damn", "shit"};
-    String filteredTitle = title.toLowerCase(); // Convertir en minuscules pour la comparaison
-    String filteredContent = content.toLowerCase(); // Convertir en minuscules pour la comparaison
-
-    for (String word : inappropriateWords) {
-        String asterisks = "";
-        for (int i = 0; i < word.length(); i++) {
-            asterisks += "*";
-        }
-        filteredTitle = filteredTitle.replaceAll(word, asterisks);
-        filteredTitle = filteredTitle.replaceAll(word.toUpperCase(), asterisks); // Prendre en compte les mots en majuscules
-        filteredContent = filteredContent.replaceAll(word, asterisks);
-        filteredContent = filteredContent.replaceAll(word.toUpperCase(), asterisks); // Prendre en compte les mots en majuscules
-    }
-
-    return filteredTitle + " " + filteredContent;
-}
 
 @Override
 public List<String> getalldescription(){
@@ -178,7 +126,46 @@ public List<String> getalldescription(){
             return description;
     
 }
-   
+
+   public String filterInappropriateWords(String title) {
+    String[] inappropriateWords = {"bad", "ugly", "damn", "shit"};
+    String filteredTitle = title.toLowerCase(); // Convertir en minuscules pour la comparaison
+
+    for (String word : inappropriateWords) {
+        String asterisks = "";
+        for (int i = 0; i < word.length(); i++) {
+            asterisks += "*";
+        }
+        if (filteredTitle.contains(word)) { // Vérifier si le mot est dans le titre
+            filteredTitle = filteredTitle.replaceAll(word, asterisks);
+            filteredTitle = filteredTitle.replaceAll(word.toUpperCase(), asterisks); // Prendre en compte les mots en majuscules
+        }
+       
+    }
+
+    return filteredTitle ;
+}
+
+
+public void ajouterPublication(publication t) throws SQLException {
+    // Filter inappropriate words
+    String filteredDescription = filterInappropriateWords(t.getDescription());
+
+    // Check if filtered description is different from original description
+    if (!filteredDescription.equals(t.getDescription())) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Attention");
+        alert.setHeaderText(null);
+        alert.setContentText("Il y a des mots interdits dans la description de la publication!");
+        alert.showAndWait();
+    }
+
+    // Use the filtered description for the query
+    String req = "INSERT INTO publication (id, titre, description, email, numerodetel) VALUES ('" + t.getId() + "', '" + t.getTitre() + "', '" + filteredDescription + "', '" + t.getEmail() + "', '" + t.getNumerodetel() + "')";
+    Statement st = cnx.createStatement();
+    st.executeUpdate(req);
+    System.out.println("Publication ajoutée avec succès");
+}
 }
 
 

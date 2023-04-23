@@ -15,13 +15,14 @@ import java.util.List;
  * @param <T>
  */
 public interface publicationInterface<T> {
-    public void ajouterpublication(T t)throws SQLException;
     public void supprimerpublication(int id);
     public void updatepublication(int id,publication t);
     public List<T> listedespublications();
  public List<publication> rechercherParTitre(String titre) throws SQLException;
- public String filterInappropriateWords(String title, String content) ;
+ public String filterInappropriateWords(String title) ;
      public List<String> getalldescription();
+     public void ajouterPublication(publication t) throws SQLException ;
+
 
 
 }
