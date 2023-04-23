@@ -33,7 +33,7 @@
             <Cursor fx:constant="DISAPPEAR" />
          </cursor>
       </ImageView>
-      <VBox layoutX="16.0" layoutY="97.0" prefHeight="0.0" prefWidth="237.0">
+      <VBox layoutX="16.0" layoutY="97.0" prefHeight="224.0" prefWidth="185.0">
          <children>
             <Label prefHeight="18.0" prefWidth="253.0" text="Titre:" textAlignment="CENTER" textFill="#681479">
                <font>
@@ -57,17 +57,18 @@
             <TextField fx:id="numdetel" layoutX="10.0" layoutY="114.0" />
          </children>
       </VBox>
-      <Button fx:id="Ajouter" layoutX="24.0" layoutY="343.0" mnemonicParsing="false" onAction="#Ajouter" prefHeight="26.0" prefWidth="94.0" text="Ajouter" textFill="#940000" />
-      <TableView fx:id="table" layoutX="273.0" layoutY="106.0" onMouseClicked="#publicationSelect" prefHeight="442.0" prefWidth="539.0">
+      <Button fx:id="Ajouter" layoutX="7.0" layoutY="343.0" mnemonicParsing="false" onAction="#Ajouter" prefHeight="26.0" prefWidth="94.0" text="Ajouter" textFill="#940000" />
+      <TableView fx:id="table" layoutX="239.0" layoutY="111.0" onMouseClicked="#publicationSelect" prefHeight="442.0" prefWidth="590.0">
         <columns>
           <TableColumn fx:id="titrecolumn" prefWidth="62.4000244140625" text="Titre" />
           <TableColumn fx:id="descriptioncolumn" prefWidth="169.5999755859375" text="Description" />
             <TableColumn fx:id="emailcolumn" prefWidth="100.80001831054688" text="email" />
-            <TableColumn fx:id="numcolumn" prefWidth="203.20001220703125" text="numéro de téléphone" />
+            <TableColumn fx:id="numcolumn" prefWidth="150.4000244140625" text="numéro de téléphone" />
+            <TableColumn fx:id="identifiant" prefWidth="76.79997558593755" text="identifiant" visible="false" />
         </columns>
       </TableView>
-      <Button fx:id="delete" layoutX="135.0" layoutY="343.0" mnemonicParsing="false" onAction="#delete" prefHeight="26.0" prefWidth="94.0" text="Supprimer" textFill="#940000" />
-      <Button fx:id="Update" layoutX="24.0" layoutY="379.0" mnemonicParsing="false" onAction="#Update" prefHeight="26.0" prefWidth="94.0" text="Modifier " textFill="#840000" />
+      <Button fx:id="delete" layoutX="113.0" layoutY="343.0" mnemonicParsing="false" onAction="#delete" prefHeight="26.0" prefWidth="94.0" text="Supprimer" textFill="#940000" />
+      <Button fx:id="Update" layoutX="7.0" layoutY="379.0" mnemonicParsing="false" onAction="#Update" prefHeight="26.0" prefWidth="94.0" text="Modifier " textFill="#840000" />
       <Text cache="true" cacheHint="SPEED" depthTest="ENABLE" fill="#b70606" layoutX="14.0" layoutY="80.0" stroke="#9c0606" strokeMiterLimit="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Les Publications " textAlignment="CENTER" underline="true" wrappingWidth="313.6000610351563">
          <font>
             <Font name="Impact" size="44.0" />
@@ -76,8 +77,8 @@
             <Cursor fx:constant="CROSSHAIR" />
          </cursor>
       </Text>
-      <Button fx:id="read" layoutX="135.0" layoutY="379.0" mnemonicParsing="false" onAction="#read" prefHeight="26.0" prefWidth="94.0" text="Afficher" textFill="#890606" />
-      <Button fx:id="button" layoutX="54.0" layoutY="425.0" mnemonicParsing="false" onAction="#surffing" prefHeight="26.0" prefWidth="144.0" text="Envoyer un Email " textFill="#840000" />
-      <Button fx:id="commenter" layoutX="40.0" layoutY="476.0" mnemonicParsing="false" onAction="#commenter" prefHeight="26.0" prefWidth="171.0" text="commenter" textFill="#840000" />
+      <Button fx:id="read" layoutX="113.0" layoutY="379.0" mnemonicParsing="false" onAction="#read" prefHeight="26.0" prefWidth="94.0" text="Afficher" textFill="#890606" />
+      <Button fx:id="button" layoutX="37.0" layoutY="421.0" mnemonicParsing="false" onAction="#surffing" prefHeight="26.0" prefWidth="144.0" text="Envoyer un Email " textFill="#840000" />
+      <Button fx:id="commenter" layoutX="27.0" layoutY="461.0" mnemonicParsing="false" onAction="#commenter" prefHeight="26.0" prefWidth="171.0" text="commenter" textFill="#840000" />
     </children>
 </AnchorPane>

@@ -22,6 +22,7 @@ public interface publicationInterface<T> {
  public String filterInappropriateWords(String title) ;
      public List<String> getalldescription();
      public void ajouterPublication(publication t) throws SQLException ;
+public void signalerPublication(int id);
 
 
 

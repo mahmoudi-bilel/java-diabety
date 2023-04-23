@@ -63,25 +63,34 @@ public class AffichageDesPublicationsController implements Initializable {
     private Button butonnqr;
     @FXML
     private ImageView imageqr;
+    @FXML
+    private TableColumn<publication , Integer> Identifiant;
+    @FXML
+    private Button signaler;
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-       // bind the columns to the appropriate properties of the publication object
-   titrecol.setCellValueFactory(new PropertyValueFactory<>("titre"));
-        descriptioncol.setCellValueFactory(new PropertyValueFactory<>("description"));
-        emailcol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        numérodetelcol.setCellValueFactory(new PropertyValueFactory<>("numerodetel"));
+   public void initialize(URL url, ResourceBundle rb) {
+    // bind the columns to the appropriate properties of the publication object
+    titrecol.setCellValueFactory(new PropertyValueFactory<>("titre"));
+    descriptioncol.setCellValueFactory(new PropertyValueFactory<>("description"));
+    emailcol.setCellValueFactory(new PropertyValueFactory<>("email"));
+    numérodetelcol.setCellValueFactory(new PropertyValueFactory<>("numerodetel"));
+    Identifiant.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        // load the data into the table
-        publicationCrud pc = new publicationCrud();
-        List<publication> publicationList = pc.listedespublications();
-        ObservableList<publication> observableList = FXCollections.observableArrayList(publicationList);
-        table.setItems(observableList);  
-    
+   publicationCrud pc = new publicationCrud();
+    List<publication> publicationList = new ArrayList<>();
+    try {
+        publicationList = pc.rechercherParTitre("");
+    } catch (SQLException ex) {
+        System.out.println("Error while fetching publications from database: " + ex.getMessage());
+    }
+    ObservableList<publication> observableList = FXCollections.observableArrayList(publicationList);
+    table.setItems(observableList);
 }
+
 
     @FXML
     private void Rechercher(ActionEvent event) throws SQLException {
@@ -142,5 +151,23 @@ public class AffichageDesPublicationsController implements Initializable {
             e.printStackTrace();
         }
     }
+
+   @FXML
+private void signaler(ActionEvent event) {
+    publication selectedPublication = table.getSelectionModel().getSelectedItem();
+    if (selectedPublication != null) {
+        publicationCrud pc = new publicationCrud();
+        pc.signalerPublication(selectedPublication.getId());
+        // Afficher un message de confirmation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("La publication a été signalée avec succès");
+        alert.showAndWait();
+    } else {
+        // Si aucune publication n'est sélectionnée
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText("Veuillez sélectionner une publication à signaler");
+        alert.showAndWait();
+    }
+}
     
 }

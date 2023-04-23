@@ -127,29 +127,28 @@ public List<String> getalldescription(){
     
 }
 
-   public String filterInappropriateWords(String title) {
+   public String filterInappropriateWords(String text) {
     String[] inappropriateWords = {"bad", "ugly", "damn", "shit"};
-    String filteredTitle = title.toLowerCase(); // Convertir en minuscules pour la comparaison
+    String filteredText = text.toLowerCase(); // Convertir en minuscules pour la comparaison
 
     for (String word : inappropriateWords) {
         String asterisks = "";
         for (int i = 0; i < word.length(); i++) {
             asterisks += "*";
         }
-        if (filteredTitle.contains(word)) { // Vérifier si le mot est dans le titre
-            filteredTitle = filteredTitle.replaceAll(word, asterisks);
-            filteredTitle = filteredTitle.replaceAll(word.toUpperCase(), asterisks); // Prendre en compte les mots en majuscules
+        if (filteredText.contains(word)) { // Vérifier si le mot est dans le texte
+            filteredText = filteredText.replaceAll(word, asterisks);
+            filteredText = filteredText.replaceAll(word.toUpperCase(), asterisks); // Prendre en compte les mots en majuscules
         }
-       
     }
 
-    return filteredTitle ;
+    return filteredText;
 }
 
-
 public void ajouterPublication(publication t) throws SQLException {
-    // Filter inappropriate words
+    // Filter inappropriate words in description and title
     String filteredDescription = filterInappropriateWords(t.getDescription());
+    String filteredTitle = filterInappropriateWords(t.getTitre());
 
     // Check if filtered description is different from original description
     if (!filteredDescription.equals(t.getDescription())) {
@@ -160,11 +159,31 @@ public void ajouterPublication(publication t) throws SQLException {
         alert.showAndWait();
     }
 
-    // Use the filtered description for the query
-    String req = "INSERT INTO publication (id, titre, description, email, numerodetel) VALUES ('" + t.getId() + "', '" + t.getTitre() + "', '" + filteredDescription + "', '" + t.getEmail() + "', '" + t.getNumerodetel() + "')";
+    // Check if filtered title is different from original title
+    if (!filteredTitle.equals(t.getTitre())) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Attention");
+        alert.setHeaderText(null);
+        alert.setContentText("Il y a des mots interdits dans le titre de la publication!");
+        alert.showAndWait();
+    }
+
+    // Use the filtered description and title for the query
+    String req = "INSERT INTO publication (id, titre, description, email, numerodetel) VALUES ('" + t.getId() + "', '" + filteredTitle + "', '" + filteredDescription + "', '" + t.getEmail() + "', '" + t.getNumerodetel() + "')";
     Statement st = cnx.createStatement();
     st.executeUpdate(req);
     System.out.println("Publication ajoutée avec succès");
+}
+public void signalerPublication(int id) {
+    try {
+        String query = "UPDATE publication SET signale = true WHERE id = ?";
+        PreparedStatement pst = cnx.prepareStatement(query);
+        pst.setInt(1, id);
+        pst.executeUpdate();
+        System.out.println("La publication a été signalée avec succès !");
+    } catch (SQLException ex) {
+        Logger.getLogger(publicationCrud.class.getName()).log(Level.SEVERE, null, ex);
+    }
 }
 }
 

@@ -75,6 +75,8 @@ private Button delete;
     private Button button;
     @FXML
     private Button commenter;
+    @FXML
+    private TableColumn<publication, Integer> identifiant;
     /**
      * Initializes the controller class.
      */
@@ -85,6 +87,8 @@ public void initialize(URL url, ResourceBundle rb) {
     descriptioncolumn.setCellValueFactory(new PropertyValueFactory<>("description"));
     emailcolumn.setCellValueFactory(new PropertyValueFactory<>("email"));
     numcolumn.setCellValueFactory(new PropertyValueFactory<>("numerodetel"));
+    identifiant.setCellValueFactory(new PropertyValueFactory<>("id"));
+
 
     // load the data into the table
     publicationCrud pc = new publicationCrud();
@@ -308,6 +312,7 @@ private void Update(ActionEvent event) {
     publicationCrud pc = new publicationCrud();
     
     pc.updatepublication(selectedPublication.getId(), selectedPublication);
+        System.out.println(selectedPublication.getId());
     Alert all = new Alert(Alert.AlertType.CONFIRMATION);
     all.setTitle("publication");
     all.setContentText("publication modifié !!");
